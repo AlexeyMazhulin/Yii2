@@ -2,8 +2,13 @@
 
 namespace app\components;
 
-use phpDocumentor\Reflection\Types\Boolean;
+use app\components\FileComponent;
 use yii\base\Component;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
+use app\models\Activity;
+
+
 
 class ActivityComponent extends Component
 {
@@ -23,12 +28,32 @@ class ActivityComponent extends Component
     }
 
     public function createActivity(&$model):bool{
+
+        $model->file=FileComponent::getUploadedFile($model,'file');
+
+
         if(!$model->validate()){
-            print_r($model->GetErrors());
+          //  print_r($model->GetErrors());
             return false;
         }
-        return true;
 
+        if($model->file) {
+            foreach ($model->file as $oneFile) {
+                $path = FileComponent::genFilePath(FileComponent::genFileName($oneFile));
+
+                if (!FileComponent::saveUploadedFile($oneFile, $path)) {
+                    $model->addError('file', 'не удалось сохранить файл');
+                    return false;
+                } else {
+                    $model->file = basename($path);
+
+                };
+
+
+            }
+        }
+        return true;
     }
+
 
 }

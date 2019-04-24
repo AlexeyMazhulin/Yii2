@@ -59,6 +59,9 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
+        <h4>Предыдущая страница</h4>
+        <p><?php echo \Yii::$app->session->get('page_url','no_page').PHP_EOL;?></p>
+
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

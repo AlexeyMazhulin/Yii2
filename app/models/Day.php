@@ -12,4 +12,12 @@ class Day extends Model
 
     public $Activity;
 
+    public function rules()
+    {
+        return [
+            ['isWorkDay','boolean'],
+            ['Activity',[[]]]
+            ];
+    }
+
 }
